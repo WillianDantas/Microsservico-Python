@@ -1,105 +1,107 @@
 import time
 from threading import Thread
 
+from starlette.routing import Host
+
 from common import Base
 from lib import teste
 from models import Pessoa
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
-from fastapi import APIRouter, WebSocket
+from fastapi import FastAPI, WebSocket
 from fastapi.responses import HTMLResponse
+import uvicorn
+
+# def executa_algo(arg):
+#     for val in arg:
+#         if val == "i":
+#             break
+#         print(val)
 
 
-def executa_algo(arg):
-    for val in arg:
-        if val == "i":
-            break
-        print(val)
+# def multiply():
+#     nums = [1, 2, 3, 4, 5]
+#     for num in nums:
+#         # .... geração de relatórios ....
+
+#         yield num*num
 
 
-def multiply():
-    nums = [1, 2, 3, 4, 5]
-    for num in nums:
-        # .... geração de relatórios ....
-
-        yield num*num
-
-
-def multiplye():
-    yield 1*1
-    time.sleep(1)
-    yield 2*2
-    time.sleep(1)
-    yield 3*3
-    time.sleep(1)
-    yield 4*4
-    time.sleep(1)
-    yield 5*5
-    time.sleep(1)
-    yield 6*6
-    time.sleep(1)
+# def multiplye():
+#     yield 1*1
+#     time.sleep(1)
+#     yield 2*2
+#     time.sleep(1)
+#     yield 3*3
+#     time.sleep(1)
+#     yield 4*4
+#     time.sleep(1)
+#     yield 5*5
+#     time.sleep(1)
+#     yield 6*6
+#     time.sleep(1)
 
 
-def power():
-    yield 1**1
-    time.sleep(1)
-    yield 2**2
-    time.sleep(1)
-    yield 3**3
-    time.sleep(1)
-    yield 4**4
-    time.sleep(1)
-    yield 5**5
-    time.sleep(1)
-    yield 6**6
-    time.sleep(1)
+# def power():
+#     yield 1**1
+#     time.sleep(1)
+#     yield 2**2
+#     time.sleep(1)
+#     yield 3**3
+#     time.sleep(1)
+#     yield 4**4
+#     time.sleep(1)
+#     yield 5**5
+#     time.sleep(1)
+#     yield 6**6
+#     time.sleep(1)
 
 
-def executa(function):
-    function("aaaa")
+# def executa(function):
+#     function("aaaa")
 
 
-def exec(function):
-    function()
+# def exec(function):
+#     function()
 
 
-def printa(x):
-    print(x)
+# def printa(x):
+#     print(x)
 
 
-def main():
-    nome = "Radix"
+# def main():
+#     nome = "Radix"
 
-    resultado = executa_algo(nome)
-    for value in multiply():
-        print(value)
+#     resultado = executa_algo(nome)
+#     for value in multiply():
+#         print(value)
 
-    print(teste().nota)
+#     print(teste().nota)
 
-    executa(lambda x: print(x))
-    executa(printa)
-    exec(lambda: print("teste"))
+#     executa(lambda x: print(x))
+#     executa(printa)
+#     exec(lambda: print("teste"))
 
-    print("---------\n")
+#     print("---------\n")
 
-    thread1 = Thread(target=itera_multiply)
-    thread2 = Thread(target=itera_power)
+#     thread1 = Thread(target=itera_multiply)
+#     thread2 = Thread(target=itera_power)
 
-    thread2.start()
-    thread1.start()
-
-
-def itera_multiply():
-    for result in multiplye():
-        print(result)
+#     thread2.start()
+#     thread1.start()
 
 
-def itera_power():
-    for result in power():
-        print(result)
+# def itera_multiply():
+#     for result in multiplye():
+#         print(result)
 
 
-router = APIRouter()
+# def itera_power():
+#     for result in power():
+#         print(result)
+
+
+app = FastAPI()
 
 html = """
 <!DOCTYPE html>
@@ -135,13 +137,13 @@ html = """
 </html>
 """
 
-@router.get("/")
+@app.get("/")
 async def get():
     return HTMLResponse(html)
 
 
 
-@router.websocket("/ws")
+@app.websocket("/ws")
 async def websocket_endpoint(websocket: WebSocket):
     while True:
         await websocket.accept()
@@ -151,21 +153,21 @@ async def websocket_endpoint(websocket: WebSocket):
 
 
 # switch  case foi introduzido no python 3.10
-Session = sessionmaker()
-if __name__ == "__main__":
-    main()
-
-    engine = create_engine('sqlite:///modulo1.sqlite', echo=True)
+# Session = sessionmaker()
+# if __name__ == "__main__":
+    #uvicorn.run(app, host="127.0.0.1", port=8081)
+    #main()
+    #engine = create_engine('sqlite:///modulo1.sqlite', echo=True)
 
     # print(p.__tablename__)
 
-    Base.metadata.create_all(engine)
+    #Base.metadata.create_all(engine)
 
-    Session.configure(bind=engine)
-    session = Session()
+    #Session.configure(bind=engine)
+    #session = Session()
 
-    p = Pessoa(name="João", email="joão@radix.com", last_name="Miranda")
+    #p = Pessoa(name="João", email="joão@radix.com", last_name="Miranda")
 
-    session.add(p)
-    session.commit()
+    #session.add(p)
+    #session.commit()
 
