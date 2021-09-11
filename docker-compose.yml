@@ -1,8 +1,9 @@
 version: "2"
 services:
   websokect:
+    container_name: WebSocket_FastApi
     build: 
         context: .
         dockerfile: Dockerfile
     ports:
-      - "8083:80"
+      - "8083:8083"
